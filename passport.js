@@ -46,7 +46,7 @@ passport.use(
         );
         // return cb(null, profile);
       } catch (error) {
-        console.log(error);
+        console.log("Lỗi :\n" + error);
       }
     }
   )

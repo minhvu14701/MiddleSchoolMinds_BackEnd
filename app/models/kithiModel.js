@@ -219,7 +219,7 @@ class kithiModel {
   // hien thi exam user search name exam
   static async listExamUserSearch([idUser, querySearch, pageNumber], result) {
     const queryText =
-      "SELECT exams.id,tenlop,exams.id_subject,tenmon,`name`,time,id_course,tongCauHoi.totalQues FROM users_exam INNER JOIN exams ON users_exam.id_exam = exams.id LEFT JOIN (SELECT exams.id,COUNT(exams.id) AS totalQues FROM exams INNER JOIN exams_question ON exams.id = exams_question.id_exam) AS tongCauHoi ON users_exam.id_exam = tongCauHoi.id INNER JOIN tblmon ON tblmon.id = exams.id_subject INNER JOIN tbllop ON tbllop.id = exams.id_class WHERE users_exam.id_user = ?" +
+      "SELECT exams.id,tenlop,exams.id_subject,tenmon,`name`,time,id_course,tongCauHoi.totalQues FROM users_exam INNER JOIN exams ON users_exam.id_exam = exams.id LEFT JOIN (SELECT exams.id,COUNT(exams_question.id_exam) AS totalQues FROM exams LEFT JOIN exams_question ON exams.id = exams_question.id_exam GROUP BY exams_question.id_exam) AS tongCauHoi ON exams.id = tongCauHoi.id INNER JOIN tblmon ON tblmon.id = exams.id_subject INNER JOIN tbllop ON tbllop.id = exams.id_class WHERE users_exam.id_user = ?" +
       " " +
       querySearch +
       " " +
@@ -255,7 +255,7 @@ class kithiModel {
     result
   ) {
     const queryText =
-      "SELECT exams.id,tenlop,exams.id_subject,tenmon,`name`,time,id_course,tongCauHoi.totalQues FROM users_exam RIGHT JOIN exams ON users_exam.id_exam = exams.id LEFT JOIN (SELECT exams.id,COUNT(exams.id) AS totalQues FROM exams INNER JOIN exams_question ON exams.id = exams_question.id_exam) AS tongCauHoi ON users_exam.id_exam = tongCauHoi.id INNER JOIN tblmon ON tblmon.id = exams.id_subject INNER JOIN tbllop ON tbllop.id = exams.id_class WHERE exams.id NOT IN (SELECT users_exam.id_exam FROM users_exam WHERE users_exam.id_user = ?)" +
+      "SELECT exams.id,tenlop,exams.id_subject,tenmon,`name`,time,id_course,tongCauHoi.totalQues FROM users_exam RIGHT JOIN exams ON users_exam.id_exam = exams.id LEFT JOIN (SELECT exams.id,COUNT(exams_question.id_exam) AS totalQues FROM exams LEFT JOIN exams_question ON exams.id = exams_question.id_exam GROUP BY exams_question.id_exam) AS tongCauHoi ON exams.id = tongCauHoi.id INNER JOIN tblmon ON tblmon.id = exams.id_subject INNER JOIN tbllop ON tbllop.id = exams.id_class WHERE exams.id NOT IN (SELECT users_exam.id_exam FROM users_exam WHERE users_exam.id_user = ?)" +
       " " +
       querySearch +
       " " +
